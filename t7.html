@@ -1,0 +1,232 @@
+<!--https://poland-it-blog.com/javascript_setup/#toc6 :インストール
+    http://www.htmq.com/video/　　：参考
+    https://www.pazru.net/html5/Video/020.html　 ：10秒戻し
+    https://www.pazru.net/html5/Video/030.html   : 再生速度
+    https://techacademy.jp/magazine/28206        : ファイルダウンロード
+    https://ameblo.jp/personwritep/entry-12495099049.html　　:ファイルダウンロード（こっち使ってる！）
+    完成？？
+
+    https://lab.syncer.jp/Web/JavaScript/Snippet/25/  :動画の読み込み(fileAPI)
+    https://www.e-loop.jp/knowledges/35/　　　　　　　 ：画像の読み込み（fileAPI)
+    https://lab.syncer.jp/Web/JavaScript/Snippet/5/   :JSONの値の削除
+    https://zukucode.com/2020/06/css-overflow-scroll.html :配列のスクロール表示
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="t8.css">
+</head>
+<body>
+        <input name="myfile" id="target" type="file" multiple><br/>
+        <!--<textarea name="output" cols="80" rows="10"></textarea>-->
+    <script>
+
+            var blobUrl
+            document.getElementById( "target" ).addEventListener( "change", function() {
+	// フォームで選択された全ファイルを取得
+            var fileList = this.files ;
+            
+
+            // 個数分の動画を表示する
+            for( var i=0,l=fileList.length; l>i; i++ ) {
+                // Blob URLの作成
+                blobUrl = window.URL.createObjectURL( fileList[i] ) ;
+
+                // HTMLに書き出し (src属性にblob URLを指定)
+                document.body.innerHTML += '<video id="video" width="400" height="300" src="' + blobUrl + '" controls></video>' ;
+            }
+            
+        } ) ;
+
+
+    
+    </script>
+    <!--
+    <video id="video" width="400" height="300">
+    <source src="1game-5.mp4"> 
+        <source src="ff()">
+        -->
+
+        </video>  
+        <!--<div style="width:400px; background-color:#333333; color:#ffffff;">-->
+        <div class="all">
+        <input type="button" value="再生/一時停止" onClick="playVideo()">
+        <input type="button" value="開始" onClick="hairetuVideo()">
+        <input type="button" value="休憩" onClick="qkVideo()">
+        <input type="button" value="+10秒" onClick="pkaisiVideo()">
+        <input type="button" value="-10秒" onClick="mkaisiVideo()">
+        <input type="button" value="×２" onClick="sokudoVideo()">
+        <input type="button" value="やり直し" onClick="removeVideo()">       
+        <input type="button" value="完了" onClick="download()"><br>
+
+        <input type="button" value="↑" onClick="upVolume()">
+        <input type="button" value="↓" onClick="downVolume()"><br>
+        現在（秒）：<span id="ichi">0</span><br>
+        全体（秒）：<span id="nagasa"></span><br>
+        配列（秒）：<span id="good">0</span><br>
+        
+        <span id="kanryou"></span>
+        </div>
+
+
+
+
+        <!--<div style="width: 400px; height: 120px; background-color: yellow; overflow:auto">-->
+        
+        <div class="scrol">
+        <div id="kotei1">ラリー開始時間　：</div><br>
+        <span id="hyouji" ></span><br>
+        <div id="kotei2">ラリー終わり時間:</div><br>
+        <span id="hyouji2"></span><br>
+        </div>
+
+
+        <script type="text/javascript">
+        var v = document.getElementById("video");
+        //var array1=["0"];
+        var flag=1;
+
+        var data={
+            "seekTime":[],
+            "trimTime":[]
+        }
+
+        var out={
+            "seekTime":[],
+            "trimTime":[]
+        }
+
+        function getDuration() {
+            //動画の長さ（秒）を表示
+            var v2 = document.getElementById("video");
+            document.getElementById("nagasa").innerHTML = v2.duration;
+        }
+
+        function playVideo() {
+            var v2 = document.getElementById("video");
+            //再生完了の表示をクリア
+            document.getElementById("kanryou").innerHTML = "";
+            //動画を再生
+            if(flag==1){
+                v2.play();
+                flag=0;
+            }
+            else{
+                v2.pause();
+                flag=1;
+            }
+            //現在の再生位置（秒）を表示
+            v2.addEventListener("timeupdate", function(){
+                document.getElementById("ichi").innerHTML = v2.currentTime;
+            }, false);
+            //再生完了を知らせる
+            v2.addEventListener("ended", function(){
+                document.getElementById("kanryou").innerHTML = "動画の再生が完了しました。";
+            }, false);
+        }
+
+        /*
+        function pauseVideo() {
+            //動画を一時停止
+            v.pause();
+        }
+        
+        function hairetuVideo1(){
+            array1.push(v.currentTime);
+            var value = array1[array1.length-1];
+            document.getElementById("good").innerHTML=value;
+        }
+        */
+        /////////////////////////////////////////////////
+
+        function hairetuVideo(){
+            var v2 = document.getElementById("video");
+            data.seekTime.push(v2.currentTime);
+            console.log(data);
+            document.getElementById("hyouji").innerHTML = data.seekTime;
+            seekortrim=0;
+        }
+
+        function qkVideo(){
+            var v2 = document.getElementById("video");
+            data.trimTime.push(v2.currentTime);
+            console.log(data);
+            document.getElementById("hyouji2").innerHTML = data.trimTime;
+            seekortrim=1;
+        }
+
+
+        function upVolume() {
+            //音量を上げる
+            var v2 = document.getElementById("video");
+            v2.volume = v2.volume + 0.25;
+        }
+
+        function downVolume() {
+            //音量を下げる
+            var v2 = document.getElementById("video");
+            v2.volume = v2.volume - 0.25;
+        }
+
+        function pkaisiVideo(){
+            var v2 = document.getElementById("video");
+            v2.currentTime=v2.currentTime+10;
+        }
+
+        function mkaisiVideo(){
+            var v2 = document.getElementById("video");
+            v2.currentTime=v2.currentTime-10;
+        }
+
+        function sokudoVideo(){
+            var v2 = document.getElementById("video");
+            v2.playbackRate=2;
+        }
+
+        function removeVideo(){
+            //console.log("a");
+            //var v2 = document.getElementById("video");
+            if(data.trimTime.length>=data.seekTime.length){
+                data.trimTime=data.trimTime.slice(0,-1);
+                document.getElementById("hyouji2").innerHTML=data.trimTime;/////////////////////////////////////////
+            }
+            else{
+                data.seekTime = data.seekTime.slice( 0, -1 );
+                console.log("seekTime="+data.seekTime);
+                document.getElementById("hyouji").innerHTML = data.seekTime;
+            }
+        }
+
+
+        /////////////////////////////////////いらない
+        /*
+        function download1(){
+            let blob = new Blob([array1],{type:"text/CSV"});
+            let link = document.createElement('a');
+            link.href =URL.createObjectURL(blob);
+            link.download = 'downloadtest.json';
+            console.log(link.download);
+            link.click();
+        }
+        */
+        ///////////////////////////////////////////
+        function download(){
+            let write_json1=JSON.stringify(data);
+            console.log("JSON:"+ write_json1);
+            let blob=new Blob([write_json1], {type: 'application/json'});  //URL
+            let a=document.createElement("a");
+            a.href=URL.createObjectURL(blob);
+            document.body.appendChild(a); // Firefoxで必要
+            a.download='ranking_bl.json';
+            a.click();
+            document.body.removeChild(a); // Firefoxで必要
+            URL.revokeObjectURL(a.href);
+
+        }
+
+    </script>
+</body>
+</html>

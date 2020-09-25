@@ -1,0 +1,24 @@
+.all{     /* 再生とか　完了とかあるとこ*/
+    width:400px; 
+    background-color:#333333; 
+    color:#ffffff;
+}
+
+
+.scrol{     /* スクロールのスタイル */ 
+    width: 400px; 
+    height: 120px; 
+    /*background-color: yellow;*/ 
+    overflow-x:auto;
+    position:auto;
+}
+
+#kotei1{       /* 固定したい  */
+    display:block;
+    position:fixed;
+}
+
+#kotei2{
+    display:block;
+    position:fixed;
+}

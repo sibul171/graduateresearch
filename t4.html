@@ -1,0 +1,153 @@
+<!--https://poland-it-blog.com/javascript_setup/#toc6 :インストール
+    http://www.htmq.com/video/　　：参考
+    https://www.pazru.net/html5/Video/020.html　 ：10秒戻し
+    https://www.pazru.net/html5/Video/030.html   : 再生速度
+    https://techacademy.jp/magazine/28206        : ファイルダウンロード
+    https://ameblo.jp/personwritep/entry-12495099049.html　　:ファイルダウンロード（こっち使ってる！）
+    完成？？
+    
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <video id="video" width="400" height="300">
+        <source src="1game-5.mp4">
+
+        </video>
+        <div style="width:400px; background-color:#333333; color:#ffffff;">
+        <input type="button" value="再生/一時停止" onClick="playVideo()">
+        <input type="button" value="開始" onClick="hairetuVideo()">
+        <input type="button" value="休憩" onClick="qkVideo()">
+        <input type="button" value="+10秒" onClick="pkaisiVideo()">
+        <input type="button" value="-10秒" onClick="mkaisiVideo()">
+        <input type="button" value="×２" onClick="sokudoVideo()">
+        <input type="button" value="完了" onClick="download()"><br>
+
+        <input type="button" value="↑" onClick="upVolume()">
+        <input type="button" value="↓" onClick="downVolume()"><br>
+        現在（秒）：<span id="ichi">0</span><br>
+        全体（秒）：<span id="nagasa"></span><br>
+        配列（秒）：<span id="good">0</span><br>
+        <span id="kanryou"></span>
+        </div>
+        <script type="text/javascript">
+        var v = document.getElementById("video");
+        //var array1=["0"];
+        var flag=1;
+
+        var data={
+            "seekTime":[],
+            "trimTime":[]
+        }
+
+        function getDuration() {
+            //動画の長さ（秒）を表示
+            document.getElementById("nagasa").innerHTML = v.duration;
+        }
+
+        function playVideo() {
+            //再生完了の表示をクリア
+            document.getElementById("kanryou").innerHTML = "";
+            //動画を再生
+            if(flag==1){
+                v.play();
+                flag=0;
+            }
+            else{
+                v.pause();
+                flag=1;
+            }
+            //現在の再生位置（秒）を表示
+            v.addEventListener("timeupdate", function(){
+                document.getElementById("ichi").innerHTML = v.currentTime;
+            }, false);
+            //再生完了を知らせる
+            v.addEventListener("ended", function(){
+                document.getElementById("kanryou").innerHTML = "動画の再生が完了しました。";
+            }, false);
+        }
+
+        /*
+        function pauseVideo() {
+            //動画を一時停止
+            v.pause();
+        }
+        
+        function hairetuVideo1(){
+            array1.push(v.currentTime);
+            var value = array1[array1.length-1];
+            document.getElementById("good").innerHTML=value;
+        }
+        */
+        /////////////////////////////////////////////////
+
+        function hairetuVideo(){
+            data.seekTime.push(v.currentTime);          //;はいらない？
+            console.log(data);
+        }
+
+        function qkVideo(){
+            data.trimTime.push(v.currentTime);
+            console.log(data);
+        }
+
+
+        function upVolume() {
+            //音量を上げる
+            v.volume = v.volume + 0.25;
+        }
+
+        function downVolume() {
+            //音量を下げる
+            v.volume = v.volume - 0.25;
+        }
+
+        function pkaisiVideo(){
+            var v2 = document.getElementById("video");
+            v2.currentTime=v2.currentTime+10;
+        }
+
+        function mkaisiVideo(){
+            var v2 = document.getElementById("video");
+            v2.currentTime=v2.currentTime-10;
+        }
+
+        function sokudoVideo(){
+            v.playbackRate=2;
+        }
+
+
+        /////////////////////////////////////いらない
+        /*
+        function download1(){
+            let blob = new Blob([array1],{type:"text/CSV"});
+            let link = document.createElement('a');
+            link.href =URL.createObjectURL(blob);
+            link.download = 'downloadtest.json';
+            console.log(link.download);
+            link.click();
+        }
+        */
+        ///////////////////////////////////////////
+        function download(){
+            let write_json1=JSON.stringify(data);
+            console.log("JSON:"+ write_json1);
+            let blob=new Blob([write_json1], {type: 'application/json'});  //URL
+            let a=document.createElement("a");
+            a.href=URL.createObjectURL(blob);
+            document.body.appendChild(a); // Firefoxで必要
+            a.download='ranking_bl.json';
+            a.click();
+            document.body.removeChild(a); // Firefoxで必要
+            URL.revokeObjectURL(a.href);
+
+        }
+
+    </script>
+</body>
+</html>

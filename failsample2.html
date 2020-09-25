@@ -1,0 +1,157 @@
+<!--https://www.e-loop.jp/knowledges/35/　　:ファイルAPIを使った値の読み取り-->
+<!-- textをJSON化したのをarraybufferにいれる  -->
+<!-- https://lab.syncer.jp/Web/JavaScript/Snippet/16/  :小数点の切り上げ切り捨て-->
+<!--できた！！-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form name="myform">
+
+        <input name="myfile" type="file" /><br/>
+        <!--<textarea name="output" cols="80" rows="10"></textarea>-->
+
+    </form>
+
+    <script>
+        var form = document.forms.myform;
+        var buffer=new ArrayBuffer();
+    
+
+        form.myfile.addEventListener( 'change', function(e) {
+
+        var result = e.target.files[0];
+
+        //FileReaderのインスタンスを作成する
+        var reader = new FileReader();
+
+        //読み込んだファイルの中身を取得する
+        reader.readAsText( result );
+
+        //ファイルの中身を取得後に処理を行う
+        
+        reader.addEventListener( 'load', function() {
+        
+            //ファイルの中身をtextarea内に表示する
+            //form.output.textContent = reader.result;
+            console.log(JSON.parse(reader.result));
+            buffer=JSON.parse(reader.result);
+            //console.log(buffer.seekTime);
+            //console.log(buffer.trimTime);
+            //for(var i=0;i<buffer.seekTime.length;i++)
+            //console.log(buffer.seekTime[i]);
+        })
+        
+        
+
+
+
+})
+    </script>
+    <video id="video" width="400" height="300">
+        <source src="1game-5.mp4">
+    </video>
+    <div style="width:400px; background-color:#333333; color:#ffffff;">
+        <input type="button" value="再生" onClick="playVideo()">
+        <input type="button" value="×２" onClick="sokudoVideo()">
+        <input type="button" value="OK" onClick="saiseiVideo()"> 
+        <input type="button" value="OK2" onClick="saisei2Video()">
+        <input type="button" value="一時停止" onClick="stopVideo()">
+        <br>
+        
+        現在（秒）：<span id="ichi">0</span><br>
+        全体（秒）：<span id="nagasa"></span><br>
+        <span id="kanryou"></span>
+    </div>
+
+    <script type="text/javascript">
+        var v = document.getElementById("video");
+        var flag=1;
+        var vv;
+        var i=0;
+
+        function getDuration() {
+            //動画の長さ（秒）を表示
+            document.getElementById("nagasa").innerHTML = v.duration;
+        }
+
+        function playVideo() {   //t3.html
+            //再生完了の表示をクリア
+            document.getElementById("kanryou").innerHTML = "";
+
+            //動画の再生
+            v.currentTime=buffer.seekTime[0];
+            v.play();
+            
+            
+            v.addEventListener("timeupdate", function(){
+                var v2 = document.getElementById("video");
+                //console.log(buffer.seekTime[0]);
+                if(i<buffer.seekTime.length-1){
+                    var a=Math.ceil(buffer.trimTime[i]);
+                    var time=Math.ceil(v2.currentTime);
+                    //console.log(a);
+                    //console.log(time);
+                    if(time==a){
+                        v2.currentTime=buffer.seekTime[i+1];
+                        //console.log(time);
+                        i=i+1;
+                    }
+                }
+                else{
+                    v.addEventListener("ended", function(){
+                document.getElementById("kanryou").innerHTML = "動画の再生が完了しました。";
+            }, false);
+                }
+            });
+            
+
+
+            
+            
+
+            //現在の再生位置（秒）を表示
+            v.addEventListener("timeupdate", function(){
+                document.getElementById("ichi").innerHTML = v.currentTime;
+            }, false);
+
+            //再生完了を知らせる
+            v.addEventListener("ended", function(){
+                document.getElementById("kanryou").innerHTML = "動画の再生が完了しました。";
+            }, false);
+        }
+
+        
+        function stopVideo(){
+            v.pause();
+        }
+
+        function sokudoVideo(){
+            v.playbackRate=2;
+        }
+
+        function saiseiVideo(){
+            v.currentTime=buffer.seekTime[1];
+        }
+        
+        function saisei2Video(){
+            v.currentTime=buffer.trimTime[1];
+
+        }
+
+
+
+    </script>
+
+
+        
+</body>
+</html>

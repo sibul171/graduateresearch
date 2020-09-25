@@ -1,0 +1,57 @@
+<!---
+ファイルAPIを使ってファイルの読み込み
+https://www.sejuku.net/blog/32532
+<script src="jsontest.js"></script>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form name="myform">
+
+        <input name="myfile" type="file" /><br/>
+        <textarea name="output" cols="80" rows="10">
+            
+        </textarea>
+
+
+    </form>
+    <script>
+        //Form要素を取得する
+    var form = document.forms.myform;
+    var a;
+    
+    //ファイルが読み込まれた時の処理
+    form.myfile.addEventListener('change', function(e) {
+
+    //読み込んだファイル情報の取得
+    var result=e.target.files[0];
+
+    //FileReaderのインスタンスを作成する
+    var reader = new FileReader();
+
+    //読み込んだファイルの中身を取得する
+    reader.readAsArrayBuffer(result);
+
+    //読み込んだファイルの中身を取得後処理
+    reader.addEventListener('load',function(){
+
+        //ファイルの中身をtextarea内に表示する・・・・・form.output.textContent=reader.result;  console.log(reader.result);
+        console.log(reader.result);
+        form.output.textContent=reader.result;
+        
+        
+    })
+
+
+    
+    })
+    
+    </script>
+</body>
+</html>

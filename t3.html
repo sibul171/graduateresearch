@@ -1,0 +1,70 @@
+<!--javascriptからHTMLを呼び出し-->
+<!-- https://techacademy.jp/magazine/9520 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="text/javascript" src="./Load.js"></script>
+</head>
+<body onLoad="HTML_Load('NavBar.html','top');HTML_Load('./sideNav.html','side');">
+  <div id="side"></div>
+  </body>
+</html>
+
+<!--
+function playVideo() {
+            //再生完了の表示をクリア
+            document.getElementById("kanryou").innerHTML = "";
+
+            //動画の再生
+            v.play();
+
+            v.addEventListener("timeupdate", function(){  /////////
+                //console.log(buffer.seekTime[0]);
+                var a=Math.ceil(buffer.seekTime[0]);
+                var time=Math.ceil(v.currentTime);
+                console.log(a);
+                console.log(time);
+                if(time==a){
+                    v.currentTime=buffer.seekTime[3];
+                }
+            });
+
+            
+            
+
+            //現在の再生位置（秒）を表示
+            v.addEventListener("timeupdate", function(){
+                document.getElementById("ichi").innerHTML = v.currentTime;
+            }, false);
+
+            //再生完了を知らせる
+            v.addEventListener("ended", function(){
+                document.getElementById("kanryou").innerHTML = "動画の再生が完了しました。";
+            }, false);
+        }
+
+
+
+        ///////////////////
+
+        v.addEventListener("timeupdate", function(){
+                var v2 = document.getElementById("video");
+                //console.log(buffer.seekTime[0]);
+                while(i<4){
+                    var a=Math.ceil(buffer.trimTime[i]);
+                    var time=Math.ceil(v2.currentTime);
+                    //console.log(a);
+                    //console.log(time);
+                    if(time==a){
+                        v2.currentTime=buffer.seekTime[i+1];
+                        console.log(time);
+                        i=i+1;
+                    }
+                }
+            });
+
+-->

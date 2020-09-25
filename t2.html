@@ -1,0 +1,62 @@
+<!--<script src="jsontest.js"></script> 
+    https://techacademy.jp/magazine/25693
+    https://qiita.com/ponsuke0531/items/37ab0a10be42c0d202bb　・・・
+    https://www.sejuku.net/blog/47716 ・・・jsonファイルの追加・削除
+    https://www.sejuku.net/blog/32532  ・・・ファイルAPIを使った方法
+    json使ってみた
+
+!-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t2</title>
+</head>
+<body>
+    <script>
+    var json = [
+    {
+        "name": "太郎",
+        "age": "30",
+        "tel": "090-0123-4567"
+    },
+    {
+        "name": "花子",
+        "age": "23",
+        "tel": "080-4567-8901"
+    },
+    {
+        "name": "三郎",
+        "age": "18",
+        "tel": "070-3456-7890"
+    }
+    ]
+
+    //データの追加
+    console.log(json.tag="クリアー","ヘアピン");
+
+
+console.log(json);// 上のやつを出力
+json1=JSON.stringify(json);
+console.log(json1);//　JSON化したやつを出力
+console.log(json1[1].name);//　　花子の出力
+
+
+json3=JSON.parse(json1);
+console.log(json3);      //　配列に戻したやつを出力
+console.log(json3[1].name);//　　
+
+
+/*
+var json2=JSON.stringify(json);
+
+console.log(json2);
+console.log(json2.name);
+*/
+
+</script>
+
+</body>
+</html>
